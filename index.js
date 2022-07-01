@@ -6,6 +6,7 @@ const port =  process.env.PORT || 5000;
 
 // milldle ware 
 app.use(cors());
+app.use(express.json());
 
 
 
@@ -20,7 +21,7 @@ async function run(){
         const todoCollection1 = client.db("taskmanagement1").collection("todotask1");
         
         
-        app.get('/service', async (req, res) => {
+        app.get('/allTodo', async (req, res) => {
             const query = {};
             const cursor = todoCollection1.find(query);
 
@@ -28,7 +29,7 @@ async function run(){
             res.send(allTodo);
         });
 
-        app.post('/service', async (req, res) => {
+        app.post('/allTodo', async (req, res) => {
             const newTask = req.body;
             console.log(newTask);
             const doc = {todo: newTask}
