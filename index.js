@@ -17,15 +17,25 @@ async function run(){
     try{
         await client.connect();
         const todoCollection = client.db("taskmanagement").collection("todotask");
+        const todoCollection1 = client.db("taskmanagement1").collection("todotask1");
         
         
         app.get('/service', async (req, res) => {
             const query = {};
             const cursor = todoCollection.find(query);
 
-            const services = await cursor.toArray();
-            res.send(services);
+            const allTodo = await cursor.toArray();
+            res.send(allTodo);
         });
+
+        app.post('/service', async (req, res) => {
+            const newTask = req.body;
+            console.log(newTask);
+            const doc = {todo: newTask}
+            const result = await todoCollection1.insertOne(doc);
+            res.send(result);
+        })
+
     }
     finally{
         // client.close();
