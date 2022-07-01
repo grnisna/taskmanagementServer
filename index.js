@@ -22,7 +22,7 @@ async function run(){
         
         app.get('/service', async (req, res) => {
             const query = {};
-            const cursor = todoCollection.find(query);
+            const cursor = todoCollection1.find(query);
 
             const allTodo = await cursor.toArray();
             res.send(allTodo);
