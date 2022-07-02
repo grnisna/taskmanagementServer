@@ -17,23 +17,33 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
         await client.connect();
-        const todoCollection = client.db("taskmanagement").collection("todotask");
-        const todoCollection1 = client.db("taskmanagement1").collection("todotask1");
+        const currentDayTask = client.db("taskmanagement").collection("todotask");
+        const nextDayTask = client.db("next_day_task").collection("next_task");
         
         
-        app.get('/allTodo', async (req, res) => {
+        app.get('/currentDay', async (req, res) => {
             const query = {};
-            const cursor = todoCollection1.find(query);
-
+            const cursor = currentDayTask.find(query);
             const allTodo = await cursor.toArray();
             res.send(allTodo);
         });
 
-        app.post('/allTodo', async (req, res) => {
-            const newTask = req.body;
-            console.log(newTask);
-            const doc = {todo: newTask}
-            const result = await todoCollection1.insertOne(doc);
+        app.post('/currentDay', async (req, res) => {
+            const newTask = req.body;            
+            const result = await currentDayTask.insertOne(newTask);
+            res.send(result);
+        })
+
+
+        app.get('/nextDay', async (req, res) => {
+            const query = {};
+            const cursor = nextDayTask.find(query);
+            const allTodo = await cursor.toArray();
+            res.send(allTodo);
+        });
+        app.post('/nextDay', async (req, res) => {
+            const newTask = req.body;            
+            const result = await nextDayTask.insertOne(newTask);
             res.send(result);
         })
 
